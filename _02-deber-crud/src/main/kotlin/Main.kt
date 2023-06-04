@@ -1,3 +1,5 @@
+import services.SerieService
+
 /*
 *
 Escribir un programa CRUD (Create Read Update Delete). Estas operaciones deben de realizarse en las dos entidades.
@@ -19,9 +21,5 @@ El deber se entrega con un video (Crear Leer Actualizar Delete) y el codigo escr
 */
 
 fun main(args: Array<String>) {
-    println("Hello World!")
-
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+    println(SerieService.getInstance().create(SerieService.getInstance().getOne(1)))
 }
