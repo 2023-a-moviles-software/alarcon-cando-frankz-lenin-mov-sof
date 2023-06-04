@@ -11,6 +11,23 @@ class StreamingService(
     public fun getId(): String {
         return id
     }
+
+    fun getName(): String {
+        return name
+    }
+
+    fun getDescription(): String {
+        return description
+    }
+
+    fun getPrice(): Double {
+        return price
+    }
+
+    fun getSeries(): List<Serie> {
+        return series
+    }
+
     public override fun toString(): String {
         val ids: String = series.map { it.getId() }.joinToString(";")
         return "$id,$name,$description,$price,$ids"

@@ -1,6 +1,6 @@
 package services
 
-import dtos.SerieDto
+import dtos.SeriesDto
 import models.Serie
 import java.io.File
 import java.time.LocalDate
@@ -28,7 +28,7 @@ class SeriesService {
     }
 
 
-    public fun getAll(): List<Serie> {
+    fun getAll(): List<Serie> {
         val lines = file.readLines()
         val series = lines.map { it ->
             val seriesSplit = it.split(",")
@@ -65,7 +65,7 @@ class SeriesService {
         )
     }
 
-    fun create(series: SerieDto): Serie {
+    fun create(series: SeriesDto): Serie {
         val newSeries = Serie(
             id = randomString(),
             title = series.title,
@@ -79,11 +79,33 @@ class SeriesService {
         return newSeries
     }
 
-    fun update(serie: Serie) {
-        println("Series updated")
+    fun update(series: Serie): Serie? {
+        val lines = file.readLines()
+        val seriesString = lines.find { it.split(",")[0] == series.getId() } ?: return null
+        
+        val seriesSplit = seriesString.split(",")
+
+        val newSeries = Serie(
+            id = seriesSplit[0],
+            title = series.getTitle(),
+            genre = series.getGenre(),
+            isFinished = series.getIsFinished(),
+            seasons = series.getSeasons(),
+            emissionDate = series.getEmissionDate(),
+            streamingService = series.getStreamingService()
+        )
+
+        this.remove(series.getId())
+
+        file.appendText(newSeries.toString() + "\n")
+
+        return newSeries
     }
 
-    fun remove(id: Int) {
-        println("Series removed")
+    fun remove(id: String) {
+        file.readLines()
+            .filter { it.split(",")[0] != id }
+            .joinToString("\n")
+            .also { file.writeText(it) }
     }
 }

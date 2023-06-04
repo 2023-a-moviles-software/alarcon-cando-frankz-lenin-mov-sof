@@ -17,6 +17,30 @@ class Serie(
         return id
     }
 
+    public fun getTitle(): String {
+        return title
+    }
+
+    fun getGenre(): String {
+        return genre
+    }
+
+    fun getIsFinished(): Boolean {
+        return isFinished
+    }
+
+    fun getSeasons(): Int {
+        return seasons
+    }
+
+    fun getEmissionDate(): LocalDate {
+        return emissionDate
+    }
+
+    fun getStreamingService(): StreamingService {
+        return streamingService
+    }
+
 
     override fun toString(): String {
         return "$id,$title,$genre,$isFinished,$seasons,$emissionDate,${streamingService.getId()}"

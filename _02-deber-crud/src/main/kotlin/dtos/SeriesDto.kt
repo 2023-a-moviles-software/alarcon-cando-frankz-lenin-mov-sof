@@ -2,9 +2,8 @@ package dtos
 
 import models.StreamingService
 import java.time.LocalDate
-import java.util.*
 
-class SerieDto (
+class SeriesDto (
     val title: String,
     val genre: String,
     val isFinished: Boolean,

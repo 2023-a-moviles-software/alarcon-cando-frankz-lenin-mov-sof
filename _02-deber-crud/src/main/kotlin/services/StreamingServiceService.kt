@@ -47,8 +47,21 @@ class StreamingServiceService {
     }
 
     fun getOne(id: String): StreamingService? {
-        if (id == "1") return null
-        return StreamingService("dsfds", "name", "description", 5.0, listOf<Serie>())
+        val lines = file.readLines()
+        val streamingServiceString = lines.find { it.split(",")[0] == id } ?: return null
+
+        val streamingServiceSplit = streamingServiceString.split(",")
+        // get series from an array of ids
+        val series = streamingServiceSplit[4].split(";")
+            .map { SeriesService.getInstance().getOne(it) ?: return null }
+
+        return StreamingService(
+            streamingServiceSplit[0],
+            streamingServiceSplit[1],
+            streamingServiceSplit[2],
+            streamingServiceSplit[3].toDouble(),
+            series
+        )
     }
 
     fun create(streamingService: StreamingServiceDto): StreamingService {
@@ -63,11 +76,31 @@ class StreamingServiceService {
         return newStreamingService
     }
 
-    fun update(streamingService: StreamingService) {
-        println("StreamingService updated")
+    fun update(streamingService: StreamingService): StreamingService? {
+        val lines = file.readLines()
+        val streamingServiceString = lines.find { it.split(",")[0] == streamingService.getId() } ?: return null
+
+        val streamingServiceSplit = streamingServiceString.split(",")
+
+        val newStreamingService = StreamingService(
+            streamingServiceSplit[0],
+            streamingService.getName(),
+            streamingService.getDescription(),
+            streamingService.getPrice(),
+            streamingService.getSeries()
+        )
+
+        this.remove(streamingService.getId())
+
+        file.appendText(newStreamingService.toString() + "\n")
+
+        return newStreamingService
     }
 
-    fun remove(id: Int) {
-        println("StreamingService removed")
+    fun remove(id: String) {
+        file.readLines()
+            .filter { it -> it.split(",")[0] == id }
+            .joinToString("\n")
+            .also { file.writeText(it) }
     }
 }
