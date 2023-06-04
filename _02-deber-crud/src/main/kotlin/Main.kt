@@ -1,4 +1,11 @@
-import services.SerieService
+import dtos.SerieDto
+import dtos.StreamingServiceDto
+import models.Serie
+import services.SeriesService
+import services.StreamingServiceService
+import java.text.DateFormat
+import java.time.LocalDate
+import java.util.Date
 
 /*
 *
@@ -21,5 +28,16 @@ El deber se entrega con un video (Crear Leer Actualizar Delete) y el codigo escr
 */
 
 fun main(args: Array<String>) {
-    println(SerieService.getInstance().create(SerieService.getInstance().getOne(1)))
+//    println(SeriesService.getInstance().getAll())
+    println(StreamingServiceService.getInstance().create(
+        StreamingServiceDto("name", "description", 5.0, listOf(
+            Serie("title", "genre", "description", true, 5, LocalDate.parse("2021-09-01"), StreamingServiceService.getInstance().getOne("kkkn")!!),
+            Serie("title", "genre", "description", true, 5, LocalDate.parse("2021-09-01"), StreamingServiceService.getInstance().getOne("kkkn")!!),
+        ))
+    ))
+//    println(
+//        SerieService.getInstance().create(
+//            SerieDto("title", "genre", true, 5, LocalDate.parse("2021-09-01"),
+//                StreamingServiceService.getInstance().getOne(1)!!
+//        )))
 }

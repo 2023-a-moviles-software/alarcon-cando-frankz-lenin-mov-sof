@@ -8,4 +8,11 @@ class StreamingService(
     private val series: List<Serie>,
 ) {
 
+    public fun getId(): String {
+        return id
+    }
+    public override fun toString(): String {
+        val ids: String = series.map { it.getId() }.joinToString(";")
+        return "$id,$name,$description,$price,$ids"
+    }
 }

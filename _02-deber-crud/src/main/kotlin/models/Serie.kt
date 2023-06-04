@@ -1,5 +1,6 @@
 package models
 
+import java.time.LocalDate
 import java.util.Date
 
 class Serie(
@@ -7,12 +8,17 @@ class Serie(
     private val title: String,
     private val genre: String,
     private val isFinished: Boolean,
-    private val rating: Double,
-    private val emissionDate: Date,
+    private val seasons: Int,
+    private val emissionDate: LocalDate,
     private val streamingService: StreamingService,
 ) {
 
+    public fun getId(): String {
+        return id
+    }
+
+
     override fun toString(): String {
-        return "Serie(id=$id, title='$title', genre='$genre', isFinished=$isFinished, rating=$rating, emissionDate=$emissionDate, streamingService=$streamingService)"
+        return "$id,$title,$genre,$isFinished,$seasons,$emissionDate,${streamingService.getId()}"
     }
 }
