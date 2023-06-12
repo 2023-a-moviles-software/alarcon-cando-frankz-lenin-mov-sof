@@ -32,4 +32,13 @@ class StreamingService(
         val ids: String = series.map { it.getId() }.joinToString(";")
         return "$id,$name,$description,$price,$ids"
     }
+
+    fun getListOfStringFromData(): List<String> {
+        return listOf(
+            "Nombre: $name",
+            "Descripción: $description",
+            "Precio: $price",
+            "Series: ${series.map { it.getTitle() }}",
+        )
+    }
 }

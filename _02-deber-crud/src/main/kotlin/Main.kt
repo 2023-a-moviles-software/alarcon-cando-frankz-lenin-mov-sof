@@ -1,5 +1,5 @@
-import views.ConsoleView
+import views.MainView
 
 fun main(args: Array<String>) {
-    ConsoleView().init()
+    MainView().init()
 }

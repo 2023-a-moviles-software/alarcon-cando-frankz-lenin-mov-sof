@@ -34,13 +34,15 @@ class StreamingServiceService {
             val streamingServiceSplit = it.split(",")
             // get series from an array of ids
             val series = streamingServiceSplit[4].split(";")
-                .map { SeriesService.getInstance().getOne(it) ?: return listOf<StreamingService>() }
+                .map { SeriesService.getInstance().getOne(it) }
+
+            val validSeries = series.filterNotNull()
             return@map StreamingService(
                 streamingServiceSplit[0],
                 streamingServiceSplit[1],
                 streamingServiceSplit[2],
                 streamingServiceSplit[3].toDouble(),
-                series
+                validSeries
             )
         }
         return streamingServices
@@ -99,8 +101,8 @@ class StreamingServiceService {
 
     fun remove(id: String) {
         file.readLines()
-            .filter { it -> it.split(",")[0] == id }
-            .joinToString("\n")
+            .filter { it -> it.split(",")[0] != id }
+            .joinToString("\n", postfix = "\n")
             .also { file.writeText(it) }
     }
 }

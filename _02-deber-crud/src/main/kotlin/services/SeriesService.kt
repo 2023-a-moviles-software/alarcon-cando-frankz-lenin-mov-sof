@@ -105,7 +105,7 @@ class SeriesService {
     fun remove(id: String) {
         file.readLines()
             .filter { it.split(",")[0] != id }
-            .joinToString("\n")
+            .joinToString("\n", postfix = "\n")
             .also { file.writeText(it) }
     }
 }

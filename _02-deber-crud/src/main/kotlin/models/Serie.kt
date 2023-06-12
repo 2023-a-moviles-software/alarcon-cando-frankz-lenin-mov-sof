@@ -45,4 +45,15 @@ class Serie(
     override fun toString(): String {
         return "$id,$title,$genre,$isFinished,$seasons,$emissionDate,${streamingService.getId()}"
     }
+
+    fun getListOfStringFromData(): List<String> {
+        return listOf(
+            "Título: $title",
+            "Género: $genre",
+            "Finalizada: $isFinished",
+            "Temporadas: $seasons",
+            "Fecha de emisión: $emissionDate",
+            "Plataforma: ${streamingService.getName()}",
+        )
+    }
 }
