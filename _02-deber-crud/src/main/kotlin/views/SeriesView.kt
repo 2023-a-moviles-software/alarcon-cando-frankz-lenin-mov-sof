@@ -82,7 +82,70 @@ class SeriesView {
     }
 
     fun updateSerie() {
+        val series = SeriesService.getInstance().safeGetAll()
+        if (series.isEmpty()) {
+            println("No hay series")
+            return
+        }
+        series.forEachIndexed { index, it -> println("${index + 1}. ${it.getTitle()}") }
+        println("Selecciona la serie que deseas actualizar:")
+        val option = readln().toInt()
+        if (option > series.size || option < 1) {
+            println("Opción no válida")
+            return
+        }
+        val selectedSeries = series[option - 1]
 
+        println(tables.createTableFromList(selectedSeries.getListOfStringFromData()))
+
+        println("Ingrese el título de la serie:")
+        val title = readln()
+        println("Ingrese el género de la serie:")
+        val genre = readln()
+        println("¿La serie ya está finalizada? (s/n)")
+        val isFinished = readln().lowercase() == "s"
+        println("Ingrese el número de temporadas de la serie:")
+        val seasons = readln().toInt()
+        println("Ingrese la fecha de emision de la serie (formato: yyyy-MM-dd):")
+        val emissionDate = LocalDate.parse(readln())
+        println("Selecciona el servicio de streaming de la serie:")
+        val streamingServices = StreamingServiceService.getInstance().safeGetAll()
+        streamingServices.forEachIndexed { index, streamingService ->
+            println("${index + 1}. ${streamingService.getName()}")
+        }
+        val streamingServiceIndex = readln().toInt()
+
+        if (streamingServiceIndex > streamingServices.size || streamingServiceIndex < 1) {
+            println("Opción no válida")
+            return
+        }
+
+        val streamingService = streamingServices[streamingServiceIndex - 1]
+
+        val updatedSeries = Serie(
+            id = selectedSeries.getId(),
+            title = title,
+            genre = genre,
+            isFinished = isFinished,
+            seasons = seasons,
+            emissionDate = emissionDate,
+            streamingService = streamingService,
+        )
+
+        val savedSerie = SeriesService.getInstance().update(updatedSeries)
+
+        if (savedSerie == null) {
+            println("No se pudo actualizar la serie")
+            return
+        }
+
+        streamingService.removeSeries(selectedSeries)
+        streamingService.addSeries(savedSerie)
+        StreamingServiceService.getInstance().update(streamingService)
+
+        val formattedData = tables.createTableFromList(updatedSeries.getListOfStringFromData())
+        println(formattedData)
+        println("Serie actualizada correctamente")
     }
 
     fun deleteSerie() {

@@ -68,7 +68,7 @@ class StreamingServicesView {
     }
 
     private fun updateStreamingService() {
-        val streamingServices = StreamingServiceService.getInstance().getAll()
+        val streamingServices = StreamingServiceService.getInstance().safeGetAll()
         if (streamingServices.isEmpty()) {
             println("No hay servicios de streaming")
             return
