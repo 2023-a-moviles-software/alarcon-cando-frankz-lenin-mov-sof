@@ -86,6 +86,23 @@ class SeriesView {
     }
 
     fun deleteSerie() {
-
+        val series = SeriesService.getInstance().safeGetAll()
+        if (series.isEmpty()) {
+            println("No hay series")
+            return
+        }
+        series.forEachIndexed { index, it -> println("${index + 1}. ${it.getTitle()}") }
+        println("Selecciona la serie que deseas eliminar:")
+        val option = readln().toInt()
+        if (option > series.size || option < 1) {
+            println("Opción no válida")
+            return
+        }
+        val selectedSeries = series[option - 1]
+        val streamingService = selectedSeries.getStreamingService()
+        streamingService.removeSeries(selectedSeries)
+        StreamingServiceService.getInstance().update(streamingService)
+        SeriesService.getInstance().remove(selectedSeries.getId())
+        println("Serie eliminada con éxito")
     }
 }

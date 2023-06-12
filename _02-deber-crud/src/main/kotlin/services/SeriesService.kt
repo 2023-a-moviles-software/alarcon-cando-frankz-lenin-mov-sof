@@ -53,7 +53,7 @@ class SeriesService {
         val lines = file.readLines()
         val series = lines.map { it ->
             val seriesSplit = it.split(",")
-            val streamingService = StreamingServiceService.getInstance().getOneWithoutSeries(seriesSplit[6]) ?: return@map null
+            val streamingService = StreamingServiceService.getInstance().getOneWithSeriesWithoutStreamingService(seriesSplit[6]) ?: return@map null
 
             return@map Serie(
                 seriesSplit[0],

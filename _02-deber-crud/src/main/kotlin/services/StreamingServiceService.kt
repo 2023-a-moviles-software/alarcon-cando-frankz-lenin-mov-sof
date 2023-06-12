@@ -88,7 +88,7 @@ class StreamingServiceService {
         )
     }
 
-    fun getOneWithoutSeries(id: String): StreamingService? {
+    fun getOneWithSeriesWithoutStreamingService(id: String): StreamingService? {
         val lines = file.readLines()
         val streamingServiceString = lines.find { it.split(",")[0] == id } ?: return null
 
