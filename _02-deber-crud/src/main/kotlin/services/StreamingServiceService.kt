@@ -42,7 +42,27 @@ class StreamingServiceService {
                 streamingServiceSplit[1],
                 streamingServiceSplit[2],
                 streamingServiceSplit[3].toDouble(),
-                validSeries
+                validSeries.toMutableList()
+            )
+        }
+        return streamingServices
+    }
+
+    fun safeGetAll(): List<StreamingService> {
+        val lines = file.readLines()
+        val streamingServices = lines.map { it ->
+            val streamingServiceSplit = it.split(",")
+            // get series from an array of ids
+            val series = streamingServiceSplit[4].split(";")
+                .map { SeriesService.getInstance().getOneWithoutStreamingService(it) }
+
+            val validSeries = series.filterNotNull()
+            return@map StreamingService(
+                streamingServiceSplit[0],
+                streamingServiceSplit[1],
+                streamingServiceSplit[2],
+                streamingServiceSplit[3].toDouble(),
+                validSeries.toMutableList()
             )
         }
         return streamingServices
@@ -55,14 +75,36 @@ class StreamingServiceService {
         val streamingServiceSplit = streamingServiceString.split(",")
         // get series from an array of ids
         val series = streamingServiceSplit[4].split(";")
-            .map { SeriesService.getInstance().getOne(it) ?: return null }
+            .map { SeriesService.getInstance().getOne(it) }
+
+        val validSeries = series.filterNotNull()
 
         return StreamingService(
             streamingServiceSplit[0],
             streamingServiceSplit[1],
             streamingServiceSplit[2],
             streamingServiceSplit[3].toDouble(),
-            series
+            validSeries.toMutableList()
+        )
+    }
+
+    fun getOneWithoutSeries(id: String): StreamingService? {
+        val lines = file.readLines()
+        val streamingServiceString = lines.find { it.split(",")[0] == id } ?: return null
+
+        val streamingServiceSplit = streamingServiceString.split(",")
+        // get series from an array of ids
+        val series = streamingServiceSplit[4].split(";")
+            .map { SeriesService.getInstance().getOneWithoutStreamingService(it) }
+
+        val validSeries = series.filterNotNull()
+
+        return StreamingService(
+            streamingServiceSplit[0],
+            streamingServiceSplit[1],
+            streamingServiceSplit[2],
+            streamingServiceSplit[3].toDouble(),
+            validSeries.toMutableList()
         )
     }
 
@@ -72,7 +114,7 @@ class StreamingServiceService {
             streamingService.name,
             streamingService.description,
             streamingService.price,
-            streamingService.series
+            streamingService.series.toMutableList()
         )
         file.appendText(newStreamingService.toString() + "\n")
         return newStreamingService

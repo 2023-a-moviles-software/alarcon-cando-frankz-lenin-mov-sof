@@ -13,6 +13,8 @@ class Serie(
     private val streamingService: StreamingService,
 ) {
 
+    constructor() : this("", "", "", false, 0, LocalDate.now(), StreamingService())
+
     public fun getId(): String {
         return id
     }

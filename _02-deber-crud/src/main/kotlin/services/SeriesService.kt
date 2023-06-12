@@ -2,6 +2,7 @@ package services
 
 import dtos.SeriesDto
 import models.Serie
+import models.StreamingService
 import java.io.File
 import java.time.LocalDate
 
@@ -32,7 +33,8 @@ class SeriesService {
         val lines = file.readLines()
         val series = lines.map { it ->
             val seriesSplit = it.split(",")
-            val streamingService = StreamingServiceService.getInstance().getOne(seriesSplit[6]) ?: return listOf<Serie>()
+            val streamingService = StreamingServiceService.getInstance().getOne(seriesSplit[6]) ?: return@map null
+
             return@map Serie(
                 seriesSplit[0],
                 seriesSplit[1],
@@ -43,8 +45,27 @@ class SeriesService {
                 streamingService
             )
         }
+        return series.filterNotNull()
+    }
 
-        return series
+
+    fun safeGetAll(): List<Serie> {
+        val lines = file.readLines()
+        val series = lines.map { it ->
+            val seriesSplit = it.split(",")
+            val streamingService = StreamingServiceService.getInstance().getOneWithoutSeries(seriesSplit[6]) ?: return@map null
+
+            return@map Serie(
+                seriesSplit[0],
+                seriesSplit[1],
+                seriesSplit[2],
+                seriesSplit[3].toBoolean(),
+                seriesSplit[4].toInt(),
+                LocalDate.parse(seriesSplit[5]),
+                streamingService
+            )
+        }
+        return series.filterNotNull()
     }
 
     fun getOne(id: String): Serie? {
@@ -62,6 +83,23 @@ class SeriesService {
             seriesSplit[4].toInt(),
             LocalDate.parse(seriesSplit[5]),
             streamingService
+        )
+    }
+
+    fun getOneWithoutStreamingService(id: String): Serie? {
+        val lines = file.readLines()
+        val seriesString = lines.find { it.split(",")[0] == id } ?: return null
+
+        val seriesSplit = seriesString.split(",")
+
+        return Serie(
+            seriesSplit[0],
+            seriesSplit[1],
+            seriesSplit[2],
+            seriesSplit[3].toBoolean(),
+            seriesSplit[4].toInt(),
+            LocalDate.parse(seriesSplit[5]),
+            StreamingService()
         )
     }
 

@@ -29,7 +29,7 @@ class MainView {
             val option = readln().toInt()
             when (option) {
                 1 -> {
-                    if (StreamingServiceService.getInstance().getAll().isEmpty()) {
+                    if (StreamingServiceService.getInstance().safeGetAll().isEmpty()) {
                         println("No existen Servicios de Streaming, primero crea uno.")
                         showAgain = true
                     } else {

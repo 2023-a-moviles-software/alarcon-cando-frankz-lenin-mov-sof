@@ -24,8 +24,8 @@ class SeriesView {
             when (option) {
                 1 -> listAllSeries()
                 2 -> createSerie()
-                3 -> SeriesService.getInstance().getAll().forEach { println(it) }
-                4 -> SeriesService.getInstance().getAll().forEach { println(it) }
+                3 -> updateSerie()
+                4 -> deleteSerie()
                 5 -> {
                     goBack = true
                     parent.init()
@@ -36,12 +36,12 @@ class SeriesView {
     }
 
     fun listAllSeries() {
-        val series: List<Serie> = SeriesService.getInstance().getAll()
+        val series: List<Serie> = SeriesService.getInstance().safeGetAll()
 
         if (series.isEmpty()) {
             println("No hay series")
         } else {
-            series.forEach { println(it) }
+            series.forEach { println(tables.createTableFromList(it.getListOfStringFromData())) }
         }
     }
 
@@ -57,9 +57,9 @@ class SeriesView {
         println("Ingrese la fecha de emision de la serie (formato: yyyy-MM-dd):")
         val emissionDate = LocalDate.parse(readln())
         println("Selecciona el servicio de streaming de la serie:")
-        val streamingServices = StreamingServiceService.getInstance().getAll()
+        val streamingServices = StreamingServiceService.getInstance().safeGetAll()
         streamingServices.forEachIndexed { index, streamingService ->
-            println("${index + 1}. $streamingService")
+            println("${index + 1}. ${streamingService.getName()}")
         }
         val streamingServiceIndex = readln().toInt() - 1
         val streamingService = streamingServices[streamingServiceIndex]
@@ -74,8 +74,18 @@ class SeriesView {
         )
 
         val createdSeries = SeriesService.getInstance().create(series)
+        streamingService.addSeries(createdSeries)
+        StreamingServiceService.getInstance().update(streamingService)
         val formattedData = tables.createTableFromList(createdSeries.getListOfStringFromData())
         println(formattedData)
         println("Serie creada correctamente")
+    }
+
+    fun updateSerie() {
+
+    }
+
+    fun deleteSerie() {
+
     }
 }

@@ -5,8 +5,10 @@ class StreamingService(
     private val name: String,
     private val description: String,
     private val price: Double,
-    private val series: List<Serie>,
+    private var series: MutableList<Serie>,
 ) {
+
+    constructor() : this("", "", "", 0.0, mutableListOf())
 
     public fun getId(): String {
         return id
@@ -24,8 +26,16 @@ class StreamingService(
         return price
     }
 
-    fun getSeries(): List<Serie> {
+    fun getSeries(): MutableList<Serie> {
         return series
+    }
+
+    fun addSeries(series: Serie) {
+        this.series.add(series)
+    }
+
+    fun removeSeries(series: Serie) {
+        this.series = this.series.filter { it.getId() != series.getId() }.toMutableList()
     }
 
     public override fun toString(): String {

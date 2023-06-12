@@ -2,11 +2,12 @@ package views
 
 import dtos.StreamingServiceDto
 import models.Serie
+import models.StreamingService
 import services.StreamingServiceService
 
 class StreamingServicesView {
 
-    val tables = ConsoleTable()
+    private val tables = ConsoleTable()
 
     fun selectStreamingServicesMenu(parent: MainView) {
         var goBack = false
@@ -37,7 +38,7 @@ class StreamingServicesView {
     }
 
     private fun listStreamingServices() {
-        val streamingServices = StreamingServiceService.getInstance().getAll()
+        val streamingServices = StreamingServiceService.getInstance().safeGetAll()
         if (streamingServices.isEmpty()) {
             println("No hay servicios de streaming")
         } else {
@@ -66,12 +67,48 @@ class StreamingServicesView {
         println("Servicio de Streaming creado con éxito")
     }
 
-    fun updateStreamingService() {
+    private fun updateStreamingService() {
+        val streamingServices = StreamingServiceService.getInstance().getAll()
+        if (streamingServices.isEmpty()) {
+            println("No hay servicios de streaming")
+            return
+        }
+        streamingServices.forEachIndexed { index, it -> println("${index + 1}. ${it.getName()}") }
+        println("Selecciona el servicio de streaming que deseas actualizar:")
+        val option = readln().toInt()
+        if (option > streamingServices.size || option < 1) {
+            println("Opción no válida")
+            return
+        }
+        val selectedStreamingService = streamingServices[option - 1]
+        println(tables.createTableFromList(selectedStreamingService.getListOfStringFromData()))
+        println("Ingrese el nuevo nombre del servicio de streaming:")
+        val name = readln()
+        println("Ingrese la nueva descripción del servicio de streaming:")
+        val description = readln()
+        println("Ingrese el nuevo precio del servicio de streaming:")
+        val price = readln().toDouble()
 
+        val streamingService = StreamingService(
+            id = selectedStreamingService.getId(),
+            name = name,
+            description = description,
+            price = price,
+            series = selectedStreamingService.getSeries()
+        )
+
+        val updatedStreamingService = StreamingServiceService.getInstance().update(streamingService)
+        if (updatedStreamingService == null) {
+            println("No se pudo actualizar el servicio de streaming")
+            return
+        }
+        val formattedData = tables.createTableFromList(updatedStreamingService.getListOfStringFromData())
+        println(formattedData)
+        println("Servicio de Streaming actualizado con éxito")
     }
 
-    fun deleteStreamingService() {
-        val streamingServices = StreamingServiceService.getInstance().getAll()
+    private fun deleteStreamingService() {
+        val streamingServices = StreamingServiceService.getInstance().safeGetAll()
         if (streamingServices.isEmpty()) {
             println("No hay servicios de streaming")
             return
@@ -83,7 +120,12 @@ class StreamingServicesView {
             println("Opción no válida")
             return
         }
-        val id = streamingServices[option - 1].getId()
+        val selectedStreamingService = streamingServices[option - 1]
+        if (selectedStreamingService.getSeries().isNotEmpty()) {
+            println("No se puede eliminar el servicio de streaming porque tiene series asociadas")
+            return
+        }
+        val id = selectedStreamingService.getId()
         StreamingServiceService.getInstance().remove(id)
         println("Servicio de Streaming eliminado con éxito")
     }
