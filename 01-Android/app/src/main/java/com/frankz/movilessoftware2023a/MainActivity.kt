@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         botonCicloVida.setOnClickListener {
             irActividad(
-                ACicloVida::class.java
+                AACicloVida::class.java
             )
         }
     }
