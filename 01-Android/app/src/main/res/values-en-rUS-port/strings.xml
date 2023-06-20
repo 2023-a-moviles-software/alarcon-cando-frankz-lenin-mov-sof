@@ -3,4 +3,5 @@
     <string name="app_name">MovilesSoftware2023A</string>
     <string name="text_btn">Portrait EN</string>
     <string name="bienvenida">Bienvenido(a) al Portrait EN</string>
+    <string name="btn_list_view">List View</string>
 </resources>
