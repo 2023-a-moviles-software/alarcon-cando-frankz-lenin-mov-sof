@@ -5,5 +5,7 @@ class BEntrenador (
     var nombre: String?,
     var deescripcion: String?,
 ) {
-
+    override fun toString(): String {
+        return "$id - $nombre - $deescripcion"
+    }
 }
