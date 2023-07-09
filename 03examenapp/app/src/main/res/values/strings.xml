@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">03-examen-app</string>
+    <string name="streaming_service_title">Servicios de Streaming</string>
+
+    <string name="create_streaming_service_button">Crear</string>
+    <string name="create_streaming_service_title">Nuevo Servicio de Streaming</string>
+    <string name="update_streaming_service_title">Actualizar Servicio de Streaming</string>
+
+    <string name="create_series_title">Nueva Serie</string>
+    <string name="update_series_title">Actualizar Serie</string>
+
+    <string name="menu_show_series">Ver Series</string>
+    <string name="menu_eliminar">Eliminar</string>
+    <string name="menu_update">Editar</string>
+</resources>
