@@ -60,7 +60,7 @@ class FRecyclerViewAdaptadorNombreCedula (
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+
         return this.lista.size
     }
 

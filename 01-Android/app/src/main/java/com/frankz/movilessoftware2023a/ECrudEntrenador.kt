@@ -52,7 +52,7 @@ class ECrudEntrenador : AppCompatActivity() {
                 )
         }
 
-        val botonEliminarBdd = findViewById<EditText>(R.id.btn_eliminar_bdd)
+        val botonEliminarBdd = findViewById<Button>(R.id.btn_eliminar_bdd)
         botonEliminarBdd.setOnClickListener {
             val id = findViewById<EditText>(R.id.input_id)
             EBaseDeDatos.tablaEntrenador!!

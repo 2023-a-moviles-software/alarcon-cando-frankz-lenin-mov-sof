@@ -54,23 +54,27 @@
         android:id="@+id/input_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Ingrese el id"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/input_nombre"
         app:layout_constraintEnd_toEndOf="@+id/input_nombre"
-        app:layout_constraintStart_toStartOf="@+id/input_nombre"
-        tools:layout_editor_absoluteY="122dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_nombre" />
 
     <EditText
         android:id="@+id/input_nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Ingrese el nombre"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/input_descripcion"
         app:layout_constraintEnd_toEndOf="@+id/input_descripcion"
-        app:layout_constraintStart_toStartOf="@+id/input_descripcion"
-        tools:layout_editor_absoluteY="181dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_descripcion" />
 
     <EditText
         android:id="@+id/input_descripcion"
