@@ -5,24 +5,24 @@ import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 class Series(
-    private val id: Int,
-    private val title: String,
-    private val genre: String,
-    private val isFinished: Boolean,
-    private val seasons: Int,
-    private val emissionDate: LocalDate,
-    private val streamingService: StreamingService,
+    private var id: String,
+    private var title: String,
+    private var genre: String,
+    private var isFinished: Boolean,
+    private var seasons: Int,
+    private var emissionDate: LocalDate,
+    private var streamingService: StreamingService,
 ) {
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    constructor() : this(-1, "", "", false, 0, LocalDate.now(), StreamingService())
+    constructor() : this("", "", "", false, 0, LocalDate.now(), StreamingService())
 
-    public fun getId(): Int {
+    fun getId(): String {
         return id
     }
 
-    public fun getTitle(): String {
+    fun getTitle(): String {
         return title
     }
 
@@ -42,13 +42,38 @@ class Series(
         return emissionDate
     }
 
+    fun setTitle(title: String) {
+        this.title = title
+    }
+
+    fun setGenre(genre: String) {
+        this.genre = genre
+    }
+
+    fun setIsFinished(isFinished: Boolean) {
+        this.isFinished = isFinished
+    }
+
+    fun setSeasons(seasons: Int) {
+        this.seasons = seasons
+    }
+
+    fun setEmissionDate(emissionDate: LocalDate) {
+        this.emissionDate = emissionDate
+    }
+
+    fun setStreamingService(streamingService: StreamingService) {
+        this.streamingService = streamingService
+    }
+
+
     fun getStreamingService(): StreamingService {
         return streamingService
     }
 
 
     override fun toString(): String {
-        return "$id,$title,$genre,$isFinished,$seasons,$emissionDate,${streamingService.getId()}"
+        return "$title"
     }
 
     fun getListOfStringFromData(): List<String> {

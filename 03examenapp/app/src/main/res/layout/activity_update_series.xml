@@ -8,8 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_form_update_serie"
-        android:layout_width="340dp"
-        android:layout_height="470dp"
+        android:layout_width="337dp"
+        android:layout_height="526dp"
         android:layout_marginTop="20dp"
         android:background="@color/text_color_white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,11 +33,12 @@
             android:id="@+id/pt_series_update_genre"
             android:layout_width="320dp"
             android:layout_height="50dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="Género"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pt_series_update_title" />
 
@@ -45,11 +46,12 @@
             android:id="@+id/pt_series_update_seasons"
             android:layout_width="320dp"
             android:layout_height="50dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="Número de temporadas"
             android:inputType="numberSigned"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pt_series_update_genre" />
 
@@ -57,32 +59,24 @@
             android:id="@+id/pt_series_update_emission_date"
             android:layout_width="320dp"
             android:layout_height="50dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="Fecha de emisión"
             android:inputType="date"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pt_series_update_seasons" />
-
-        <Spinner
-            android:id="@+id/spinner_update_streaming_services"
-            android:layout_width="320dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_select_update_streaming_service" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_is_finished_series" />
 
         <TextView
             android:id="@+id/tv_select_update_streaming_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Selecciona el Servicio de Streaming"
+            android:text="Servicio de Streaming"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.136"
+            app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pt_series_update_emission_date" />
 
@@ -90,21 +84,58 @@
             android:id="@+id/btn_update_series"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:background="@color/primary_color"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Guardar Cambios"
             android:textColor="@color/button_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_update_streaming_services" />
+            app:layout_constraintTop_toBottomOf="@+id/pt_streaming_service_title" />
+
+        <EditText
+            android:id="@+id/pt_streaming_service_title"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_update_streaming_service" />
+
+        <Spinner
+            android:id="@+id/spinner_is_finished_series"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_series_is_finished_title" />
+
+        <TextView
+            android:id="@+id/txt_series_is_finished_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="¿La serie está finalizada?"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pt_series_update_seasons" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/iv_series_update"
-        android:layout_width="220dp"
-        android:layout_height="135dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="162dp"
+        android:layout_height="99dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/cl_title_update_serie"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/cl_title_update_serie"
@@ -121,7 +152,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/ib_go_back_update_series"
+            android:id="@+id/ib_go_back_update_series_to_series_list"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="4dp"
@@ -143,7 +174,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.405"
-            app:layout_constraintStart_toEndOf="@+id/ib_go_back_update_series"
+            app:layout_constraintStart_toEndOf="@+id/ib_go_back_update_series_to_series_list"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.476" />
     </androidx.constraintlayout.widget.ConstraintLayout>

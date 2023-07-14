@@ -1,16 +1,20 @@
 package com.frankz.a03_examen_app.models
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+
+@RequiresApi(Build.VERSION_CODES.O)
 class StreamingService(
-    private val id: Int,
-    private val name: String,
-    private val description: String,
-    private val price: Double,
+    private var id: String,
+    private var name: String,
+    private var description: String,
+    private var price: Double,
     private var series: MutableList<Series>,
 ) {
 
-    constructor() : this(-1, "", "", 0.0, mutableListOf())
+    constructor() : this("", "", "", 0.0, mutableListOf())
 
-    public fun getId(): Int {
+    public fun getId(): String {
         return id
     }
 
@@ -30,6 +34,18 @@ class StreamingService(
         return series
     }
 
+    fun setName(name: String) {
+        this.name = name
+    }
+
+    fun setDescription(description: String) {
+        this.description = description
+    }
+
+    fun setPrice(price: Double) {
+        this.price = price
+    }
+
     fun addSeries(series: Series) {
         this.series.add(series)
     }
@@ -39,7 +55,6 @@ class StreamingService(
     }
 
     public override fun toString(): String {
-
         return "$name"
     }
 

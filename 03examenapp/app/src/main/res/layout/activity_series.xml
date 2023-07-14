@@ -47,23 +47,41 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
-        android:layout_width="423dp"
-        android:layout_height="558dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/lv_series"
+        android:layout_width="414dp"
+        android:layout_height="508dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_title_series_list" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_streaming_service" />
 
     <Button
-        android:id="@+id/btn_create_serie"
+        android:id="@+id/btn_create_series"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:background="@color/primary_color"
         android:text="Crear"
+        android:textColor="@color/text_color_white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_streaming_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Netflix"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title_series_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

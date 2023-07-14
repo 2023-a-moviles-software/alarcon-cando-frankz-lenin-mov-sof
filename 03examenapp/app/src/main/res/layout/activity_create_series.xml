@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_form_new_serie"
-        android:layout_width="340dp"
-        android:layout_height="470dp"
+        android:layout_width="372dp"
+        android:layout_height="483dp"
         android:layout_marginTop="20dp"
         android:background="@color/text_color_white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +29,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/pt_series_streaming_service"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="Streaming Service"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_streaming_service" />
 
         <EditText
             android:id="@+id/pt_series_genre"
@@ -60,38 +73,29 @@
             android:layout_height="50dp"
             android:layout_marginTop="28dp"
             android:ems="10"
-            android:hint="Fecha de emisión"
+            android:hint="Fecha de emisión Ej. 2020-09-27"
             android:inputType="date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pt_series_seasons" />
 
-        <Spinner
-            android:id="@+id/spinner_streaming_services"
-            android:layout_width="320dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_select_streaming_service" />
-
         <TextView
             android:id="@+id/tv_select_streaming_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Selecciona el Servicio de Streaming"
+            android:layout_marginTop="24dp"
+            android:text="Servicio de Streaming"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.136"
+            app:layout_constraintHorizontal_bias="0.049"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pt_series_emission_date" />
 
         <Button
-            android:id="@+id/btn_create_series"
+            android:id="@+id/btn_new_series"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:background="@color/primary_color"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -99,7 +103,7 @@
             android:textColor="@color/button_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_streaming_services" />
+            app:layout_constraintTop_toBottomOf="@+id/pt_series_streaming_service" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -107,7 +111,7 @@
         android:id="@+id/imageView2"
         android:layout_width="220dp"
         android:layout_height="135dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="@+id/cl_title_serie"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/cl_title_serie"
@@ -124,7 +128,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/go_back_to_series_list"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="4dp"
@@ -139,6 +143,7 @@
             android:id="@+id/tv_new_series"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="140dp"
             android:text="@string/create_series_title"
             android:textColor="@color/text_color_white"
             android:textSize="24sp"

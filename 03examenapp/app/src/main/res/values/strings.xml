@@ -10,6 +10,6 @@
     <string name="update_series_title">Actualizar Serie</string>
 
     <string name="menu_show_series">Ver Series</string>
-    <string name="menu_eliminar">Eliminar</string>
+    <string name="menu_delete">Eliminar</string>
     <string name="menu_update">Editar</string>
 </resources>

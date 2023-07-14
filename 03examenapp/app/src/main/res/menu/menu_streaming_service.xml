@@ -10,5 +10,5 @@
         android:title="@string/menu_update" />
     <item
         android:id="@+id/mi_delete"
-        android:title="@string/menu_eliminar" />
+        android:title="@string/menu_delete" />
 </menu>
