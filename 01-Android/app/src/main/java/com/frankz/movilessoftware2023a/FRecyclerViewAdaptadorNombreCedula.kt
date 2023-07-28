@@ -55,7 +55,7 @@ class FRecyclerViewAdaptadorNombreCedula (
         val entrenadorActual = this.lista[position]
         holder.nombreTextView.text = entrenadorActual.nombre
         holder.cedulaTextView.text = entrenadorActual.deescripcion
-        holder .accionBoton.text = "Like ${entrenadorActual.id}-${entrenadorActual.nombre}"
+        holder.accionBoton.text = "Like ${entrenadorActual.id}-${entrenadorActual.nombre}"
         holder.likesTextView.text = "0"
     }
 
