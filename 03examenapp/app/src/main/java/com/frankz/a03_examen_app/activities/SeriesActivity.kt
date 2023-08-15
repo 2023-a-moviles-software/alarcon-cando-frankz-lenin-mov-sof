@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
@@ -17,21 +18,21 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.frankz.a03_examen_app.MainActivity
 import com.frankz.a03_examen_app.R
-import com.frankz.a03_examen_app.mocks.HardcodedStreamingServices
+import com.frankz.a03_examen_app.db.Database
 import com.frankz.a03_examen_app.models.Series
+import com.frankz.a03_examen_app.models.StreamingService
 
-@RequiresApi(Build.VERSION_CODES.O)
 class SeriesActivity : AppCompatActivity() {
 
-    val streamingServices = HardcodedStreamingServices.streamingServices
-    var seletedStreamingServiceId = ""
+    private var series: ArrayList<Series>? = null
+    var seletedStreamingServiceId = 0
     var selectedItemId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series)
 
-        seletedStreamingServiceId = intent.getStringExtra("id") ?: ""
+        seletedStreamingServiceId = intent.getIntExtra("id", 0)
         println("streamingServiceId: $seletedStreamingServiceId")
 
         // load series
@@ -54,11 +55,9 @@ class SeriesActivity : AppCompatActivity() {
 
         createSeriesButton.setOnClickListener {
             goToActivity(CreateSeriesActivity::class.java, Bundle().apply {
-                val streamingService = streamingServices.find {
-                    it.getId() == seletedStreamingServiceId
-                }
-                if (streamingService != null) {
-                    putString("streamingServiceId", streamingService.getId())
+                val streamingService = Database.streamingServices!!.getOne(seletedStreamingServiceId)
+                if (streamingService.getId() == seletedStreamingServiceId) {
+                    putInt("streamingServiceId", streamingService.getId())
                     putString("streamingServiceName", streamingService.getName())
                 }
 
@@ -81,14 +80,13 @@ class SeriesActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun loadSeries(streamingServiceId: String) {
-        if (streamingServiceId != "") {
-            val streamingService = streamingServices.find {
-                it.getId() == streamingServiceId
-            }
+    private fun loadSeries(streamingServiceId: Int) {
+        if (streamingServiceId != 0) {
 
-            if (streamingService != null) {
-                val series = streamingService.getSeries()
+            val streamingService = Database.streamingServices!!.getOne(streamingServiceId)
+
+            if (streamingService.getId() == streamingServiceId) {
+                series = Database.series!!.getAllByStreamingService(streamingServiceId)
 
                 val tvTitle = findViewById<TextView>(
                     R.id.tv_streaming_service
@@ -103,7 +101,7 @@ class SeriesActivity : AppCompatActivity() {
                 val adapter = ArrayAdapter(
                     this,
                     android.R.layout.simple_list_item_1,
-                    series
+                    series!!
                 )
 
                 seriesList.adapter = adapter
@@ -120,11 +118,7 @@ class SeriesActivity : AppCompatActivity() {
         builder.setTitle("¿Deseas eliminar la serie: ${series.getTitle()}?")
         builder.setMessage("Una vez eliminado, no lo podrás recuperar")
         builder.setPositiveButton("Sí, eliminar") { dialog, which ->
-            val streamingService = streamingServices.find {
-                it.getId() == seletedStreamingServiceId
-            } ?: return@setPositiveButton
-
-            streamingService.removeSeries(series)
+            Database.series!!.remove(series.getId())
             loadSeries(seletedStreamingServiceId)
         }
         builder.setNegativeButton("No", null)
@@ -152,34 +146,28 @@ class SeriesActivity : AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        val selectedSeries = series!![selectedItemId]
         return when(item.itemId) {
             R.id.mi_edit_series -> {
-                val streamingService = streamingServices.find {
-                    it.getId() == seletedStreamingServiceId
-                } ?: return false
-
-                val series = streamingService.getSeries()[selectedItemId]
+                val streamingService = Database.streamingServices!!.getOne(seletedStreamingServiceId)
 
                 goToActivity(
                     UpdateSeriesActivity::class.java,
                     Bundle().apply {
-                        putString("streamingServiceId", seletedStreamingServiceId)
+                        putInt("streamingServiceId", seletedStreamingServiceId)
                         putString("streamingServiceName", streamingService.getName())
-                        putString("seriesId", series.getId())
-                        putString("seriesTitle", series.getTitle())
-                        putString("seriesGenre", series.getGenre())
-                        putBoolean("seriesIsFinished", series.getIsFinished())
-                        putInt("seriesSeasons", series.getSeasons())
-                        putString("seriesEmissionDate", series.getEmissionDate().toString())
+                        putInt("seriesId", selectedSeries.getId())
+                        putString("seriesTitle", selectedSeries.getTitle())
+                        putString("seriesGenre", selectedSeries.getGenre())
+                        putBoolean("seriesIsFinished", selectedSeries.getIsFinished())
+                        putInt("seriesSeasons", selectedSeries.getSeasons())
+                        putString("seriesEmissionDate", selectedSeries.getEmissionDate().toString())
                     }
                 )
                 true
             }
             R.id.mi_delete_series -> {
-                val streamingService = streamingServices.find {
-                    it.getId() == seletedStreamingServiceId
-                } ?: return false
-                showConfirmDialog(streamingService.getSeries()[selectedItemId])
+                showConfirmDialog(selectedSeries)
                 true
             }
             else -> super.onContextItemSelected(item)

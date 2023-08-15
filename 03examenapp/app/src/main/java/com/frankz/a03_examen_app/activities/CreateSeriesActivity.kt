@@ -11,14 +11,15 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import com.frankz.a03_examen_app.R
-import com.frankz.a03_examen_app.mocks.HardcodedStreamingServices
+import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.dtos.SeriesDto
 import com.frankz.a03_examen_app.models.Series
 import com.frankz.a03_examen_app.models.StreamingService
 import java.time.LocalDate
-@RequiresApi(Build.VERSION_CODES.O)
+
 class CreateSeriesActivity : AppCompatActivity() {
 
-    val streamingServices = HardcodedStreamingServices.streamingServices
+    // val streamingServices = HardcodedStreamingServices.streamingServices
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,7 @@ class CreateSeriesActivity : AppCompatActivity() {
             R.id.btn_new_series
         )
 
-        val streamingServiceId = intent.getStringExtra("streamingServiceId").toString()
+        val streamingServiceId = intent.getIntExtra("streamingServiceId", 0)
 
         saveNewSeriesButton.setOnClickListener {
             createSeries(streamingServiceId)
@@ -51,7 +52,7 @@ class CreateSeriesActivity : AppCompatActivity() {
 
     }
 
-    private fun createSeries(streamingServiceId: String) {
+    private fun createSeries(streamingServiceId: Int) {
         val inputName = findViewById<EditText>(R.id.pt_series_title)
         val inputGenre = findViewById<EditText>(R.id.pt_series_genre)
         val inputSeasons = findViewById<EditText>(R.id.pt_series_seasons)
@@ -62,19 +63,16 @@ class CreateSeriesActivity : AppCompatActivity() {
         val seasons = inputSeasons.text.toString().toInt()
         val emissionDate = inputEmissionDate.text.toString()
 
-        val streamingService = streamingServices.find { it.getId() == streamingServiceId } ?: return
-
-        val newSeries = Series(
-            HardcodedStreamingServices.generateId(),
+        val newSeries = SeriesDto(
             name,
             genre,
             false,
             seasons,
-            LocalDate.parse(emissionDate),
-            StreamingService()
+            emissionDate,
+            streamingServiceId
         )
 
-        streamingService.getSeries().add(newSeries)
+        Database.series!!.create(newSeries)
 
         finish()
     }

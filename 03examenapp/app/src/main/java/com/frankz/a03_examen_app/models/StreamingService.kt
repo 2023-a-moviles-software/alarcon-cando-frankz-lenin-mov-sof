@@ -3,18 +3,17 @@ package com.frankz.a03_examen_app.models
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-@RequiresApi(Build.VERSION_CODES.O)
 class StreamingService(
-    private var id: String,
+    private var id: Int,
     private var name: String,
     private var description: String,
     private var price: Double,
     private var series: MutableList<Series>,
 ) {
 
-    constructor() : this("", "", "", 0.0, mutableListOf())
+    constructor() : this(-1, "", "", 0.0, mutableListOf())
 
-    public fun getId(): String {
+    fun getId(): Int {
         return id
     }
 
@@ -32,6 +31,10 @@ class StreamingService(
 
     fun getSeries(): MutableList<Series> {
         return series
+    }
+
+    fun setId(id: Int) {
+        this.id = id
     }
 
     fun setName(name: String) {
@@ -54,7 +57,7 @@ class StreamingService(
         this.series = this.series.filter { it.getId() != series.getId() }.toMutableList()
     }
 
-    public override fun toString(): String {
+    override fun toString(): String {
         return "$name"
     }
 

@@ -5,21 +5,24 @@ import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.util.Date
 
-@RequiresApi(Build.VERSION_CODES.O)
 class Series(
-    private var id: String,
+    private var id: Int,
     private var title: String,
     private var genre: String,
     private var isFinished: Boolean,
     private var seasons: Int,
-    private var emissionDate: LocalDate,
-    private var streamingService: StreamingService,
+    private var emissionDate: String,
+    private var streamingServiceId: Int,
 ) {
 
-    constructor() : this("", "", "", false, 0, LocalDate.now(), StreamingService())
+    constructor() : this(-1, "", "", false, 0, "", -1)
 
-    fun getId(): String {
+    fun getId(): Int {
         return id
+    }
+
+    fun setId(id: Int) {
+        this.id = id
     }
 
     fun getTitle(): String {
@@ -38,9 +41,22 @@ class Series(
         return seasons
     }
 
-    fun getEmissionDate(): LocalDate {
+    fun getEmissionDate(): String {
         return emissionDate
     }
+
+    fun getStreamingServiceId(): Int {
+        return streamingServiceId
+    }
+
+    fun setEmissionDate(emissionDate: String) {
+        this.emissionDate = emissionDate
+    }
+
+    fun setStreamingServiceId(streamingServiceId: Int) {
+        this.streamingServiceId = streamingServiceId
+    }
+
 
     fun setTitle(title: String) {
         this.title = title
@@ -58,32 +74,7 @@ class Series(
         this.seasons = seasons
     }
 
-    fun setEmissionDate(emissionDate: LocalDate) {
-        this.emissionDate = emissionDate
-    }
-
-    fun setStreamingService(streamingService: StreamingService) {
-        this.streamingService = streamingService
-    }
-
-
-    fun getStreamingService(): StreamingService {
-        return streamingService
-    }
-
-
     override fun toString(): String {
         return "$title"
-    }
-
-    fun getListOfStringFromData(): List<String> {
-        return listOf(
-            "Título: $title",
-            "Género: $genre",
-            "Finalizada: $isFinished",
-            "Temporadas: $seasons",
-            "Fecha de emisión: $emissionDate",
-            "Plataforma: ${streamingService.getName()}",
-        )
     }
 }

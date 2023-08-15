@@ -5,20 +5,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import com.frankz.a03_examen_app.R
-import com.frankz.a03_examen_app.mocks.HardcodedStreamingServices
+import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.dtos.StreamingServiceDto
 
-@RequiresApi(Build.VERSION_CODES.O)
 class UpdateStreamingServiceActivity : AppCompatActivity() {
-
-    private val streamingServices = HardcodedStreamingServices.streamingServices
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_streaming_service)
 
         loadDataInEditText()
+
+        val goBackButton = findViewById<ImageButton>(R.id.btn_go_back)
+
+        goBackButton.setOnClickListener {
+            finish()
+        }
 
         val saveUpdateDataButton = findViewById<Button>(R.id.btn_update_streaming_service)
 
@@ -50,13 +55,15 @@ class UpdateStreamingServiceActivity : AppCompatActivity() {
         val price = inputPrice.text.toString()
         val description = inputDescription.text.toString()
 
-        val streamingServiceId = intent.getStringExtra("id")
-        println("Antes de buscar el servicio de streaming")
-        val streamingService = streamingServices.find { it.getId() == streamingServiceId } ?: return
-        println("Despues de buscar el servicio de streaming")
-        streamingService.setName(name)
-        streamingService.setPrice(price.toDouble())
-        streamingService.setDescription(description)
+        val streamingServiceId = intent.getIntExtra("id", 0)
+
+        val changes = StreamingServiceDto(
+            name = name,
+            price = price.toDouble(),
+            description = description
+        )
+
+        Database.streamingServices!!.update(streamingServiceId, changes)
 
         finish()
     }

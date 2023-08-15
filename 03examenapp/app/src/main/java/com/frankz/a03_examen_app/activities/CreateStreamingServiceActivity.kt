@@ -10,16 +10,20 @@ import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import com.frankz.a03_examen_app.MainActivity
 import com.frankz.a03_examen_app.R
-import com.frankz.a03_examen_app.mocks.HardcodedStreamingServices
+import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.dtos.StreamingServiceDto
 import com.frankz.a03_examen_app.models.StreamingService
 
-@RequiresApi(Build.VERSION_CODES.O)
 class CreateStreamingServiceActivity : AppCompatActivity() {
-    val streamingServices = HardcodedStreamingServices.streamingServices
+    // val streamingServices = HardcodedStreamingServices.streamingServices
+    private var streamingServices: ArrayList<StreamingService>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_streaming_service)
+
+        // database
+        streamingServices = Database.streamingServices!!.getAll()
 
         val goBackButton = findViewById<ImageButton>(R.id.btn_go_back)
 
@@ -50,15 +54,14 @@ class CreateStreamingServiceActivity : AppCompatActivity() {
         val description = inputDescription.text.toString()
         val price = inputPrice.text.toString().toDouble()
 
-        val newStreamingService = StreamingService(
-            HardcodedStreamingServices.generateId(),
+        val newStreamingService = StreamingServiceDto(
             name,
             description,
-            price,
-            mutableListOf()
+            price
         )
 
-        streamingServices.add(newStreamingService)
+        Database.streamingServices!!.create(newStreamingService)
+
         finish()
     }
 }

@@ -11,12 +11,12 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import com.frankz.a03_examen_app.R
-import com.frankz.a03_examen_app.mocks.HardcodedStreamingServices
+import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.dtos.SeriesDto
 import java.time.LocalDate
 
-@RequiresApi(Build.VERSION_CODES.O)
 class UpdateSeriesActivity : AppCompatActivity() {
-    private val streamingServices = HardcodedStreamingServices.streamingServices
+    // private val streamingServices = HardcodedStreamingServices.streamingServices
     private val spinnerValues = arrayListOf<String>("Si", "No")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,30 +60,26 @@ class UpdateSeriesActivity : AppCompatActivity() {
         val seriesIsFinished = spinnerIsSeriesFinished.selectedItem.toString() == "Si"
         val streamingServiceName = inputStreamingService.text.toString()
 
-        val streamingServiceId = intent.getStringExtra("streamingServiceId")
-        val seriesId = intent.getStringExtra("seriesId")
+        val streamingServiceId = intent.getIntExtra("streamingServiceId", 0)
+        val seriesId = intent.getIntExtra("seriesId", 0)
 
-        val streamingService = streamingServices.find {
-            it.getId() == streamingServiceId
-        }
 
-        val series = streamingService?.getSeries()?.find {
-            it.getId() == seriesId
-        }
+        val updatedSeries = SeriesDto(
+            seriesTitle,
+            seriesGenre,
+            seriesIsFinished,
+            seriesSeasons,
+            seriesEmissionDate,
+            streamingServiceId
+        )
 
-        series?.setTitle(seriesTitle)
-        series?.setGenre(seriesGenre)
-        series?.setSeasons(seriesSeasons)
-        series?.setEmissionDate(LocalDate.parse(seriesEmissionDate))
-        series?.setIsFinished(seriesIsFinished)
+        Database.series!!.update(seriesId, updatedSeries)
 
         finish()
     }
 
     private fun loadDataInEditText(intent: Intent) {
-        val streamingServiceId = intent.getStringExtra("streamingServiceId")
         val streamingServiceName = intent.getStringExtra("streamingServiceName")
-        val seriesId = intent.getStringExtra("seriesId")
         val seriesTitle = intent.getStringExtra("seriesTitle")
         val seriesGenre = intent.getStringExtra("seriesGenre")
         val seriesIsFinished = intent.getBooleanExtra("seriesIsFinished", false)
@@ -95,9 +91,7 @@ class UpdateSeriesActivity : AppCompatActivity() {
         val inputSeasons = findViewById<EditText>(R.id.pt_series_update_seasons)
         val inputEmissionDate = findViewById<EditText>(R.id.pt_series_update_emission_date)
         loadSpinner(seriesIsFinished)
-        val spinnerIsSeriesFinished = findViewById<Spinner>(
-            R.id.spinner_is_finished_series
-        )
+
         val inputStreamingService = findViewById<EditText>(R.id.pt_streaming_service_title)
 
         inputTitle.setText(seriesTitle)

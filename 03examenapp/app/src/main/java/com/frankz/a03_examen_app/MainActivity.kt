@@ -17,17 +17,22 @@ import androidx.appcompat.app.AlertDialog
 import com.frankz.a03_examen_app.activities.CreateStreamingServiceActivity
 import com.frankz.a03_examen_app.activities.SeriesActivity
 import com.frankz.a03_examen_app.activities.UpdateStreamingServiceActivity
-import com.frankz.a03_examen_app.mocks.HardcodedStreamingServices
+import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.db.SqliteHelperSeries
+import com.frankz.a03_examen_app.db.SqliteHelperStreamingService
 import com.frankz.a03_examen_app.models.StreamingService
 
-@RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
-    val streamingServices = HardcodedStreamingServices.streamingServices
+    private var streamingServices: ArrayList<StreamingService>? = null
     var selectedItemId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // database
+        Database.streamingServices = SqliteHelperStreamingService(this)
+        Database.series = SqliteHelperSeries(this)
 
         // load streaming services
         loadStreamingServices()
@@ -53,17 +58,22 @@ class MainActivity : AppCompatActivity() {
             R.id.lv_streaming_services
         )
 
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            streamingServices
-        )
+        streamingServices = Database.streamingServices!!.getAll()
 
-        listView.adapter = adapter
+        if (streamingServices != null) {
 
-        adapter.notifyDataSetChanged()
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_list_item_1,
+                streamingServices!!
+            )
 
-        registerForContextMenu(listView)
+            listView.adapter = adapter
+
+            adapter.notifyDataSetChanged()
+
+            registerForContextMenu(listView)
+        }
     }
 
 
@@ -80,7 +90,8 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle("¿Estás seguro de eliminar: ${streamingService.getName()}?")
         builder.setMessage("Una vez eliminado no se podrá recuperar.")
         builder.setPositiveButton("Sí") { _, _ ->
-            streamingServices.removeAt(selectedItemId)
+            val removed = streamingServices!!.removeAt(selectedItemId)
+            Database.streamingServices!!.remove(removed.getId())
             loadStreamingServices()
         }
         builder.setNegativeButton("No", null)
@@ -105,12 +116,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        val streamingService = streamingServices!![selectedItemId]
         return when(item.itemId) {
             R.id.mi_show_series -> {
                 "Hacer algo con: ${selectedItemId}"
+                if (streamingServices == null) return false
+
                 val params = Bundle()
-                val streamingService = streamingServices[selectedItemId]
-                params.putString("id", streamingService.getId())
+                params.putInt("id", streamingService.getId())
                 params.putString("name", streamingService.getName())
                 params.putDouble("price", streamingService.getPrice())
                 params.putString("description", streamingService.getDescription())
@@ -121,8 +134,7 @@ class MainActivity : AppCompatActivity() {
             R.id.mi_update -> {
                 "Hacer algo con: ${selectedItemId}"
                 val params = Bundle()
-                val streamingService = streamingServices[selectedItemId]
-                params.putString("id", streamingService.getId())
+                params.putInt("id", streamingService.getId())
                 params.putString("name", streamingService.getName())
                 params.putDouble("price", streamingService.getPrice())
                 params.putString("description", streamingService.getDescription())
@@ -131,7 +143,6 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.mi_delete -> {
-                val streamingService = streamingServices[selectedItemId]
                 showConfirmDeleteDialog(streamingService)
                 return true
             }
