@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -11,19 +12,26 @@ import androidx.annotation.RequiresApi
 import com.frankz.a03_examen_app.MainActivity
 import com.frankz.a03_examen_app.R
 import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.db.StreamingServiceFirestore
 import com.frankz.a03_examen_app.dtos.StreamingServiceDto
 import com.frankz.a03_examen_app.models.StreamingService
 
 class CreateStreamingServiceActivity : AppCompatActivity() {
     // val streamingServices = HardcodedStreamingServices.streamingServices
-    private var streamingServices: ArrayList<StreamingService>? = null
+    //private var streamingServices: ArrayList<StreamingService>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_streaming_service)
 
         // database
-        streamingServices = Database.streamingServices!!.getAll()
+//        Database.streamingServices!!.getAll()
+//            .addOnSuccessListener { result ->
+//                for (document in result) {
+//                    streamingServices!!.add(StreamingServiceFirestore.createStreamingServiceFromDocument(document))
+//                    println("${document.id} => ${document.data}")
+//                }
+//            }
 
         val goBackButton = findViewById<ImageButton>(R.id.btn_go_back)
 
@@ -38,11 +46,6 @@ class CreateStreamingServiceActivity : AppCompatActivity() {
         saveNewStreamingServiceButton.setOnClickListener {
             createStreamingService()
         }
-    }
-
-    fun goBack(mainActivity: Class<MainActivity>) {
-        val intent = Intent(this, mainActivity)
-        startActivity(intent)
     }
 
     private fun createStreamingService() {

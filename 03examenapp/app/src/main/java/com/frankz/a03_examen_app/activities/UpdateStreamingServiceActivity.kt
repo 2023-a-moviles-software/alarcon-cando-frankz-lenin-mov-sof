@@ -55,7 +55,7 @@ class UpdateStreamingServiceActivity : AppCompatActivity() {
         val price = inputPrice.text.toString()
         val description = inputDescription.text.toString()
 
-        val streamingServiceId = intent.getIntExtra("id", 0)
+        val streamingServiceId = intent.getStringExtra("id")
 
         val changes = StreamingServiceDto(
             name = name,
@@ -63,7 +63,9 @@ class UpdateStreamingServiceActivity : AppCompatActivity() {
             description = description
         )
 
-        Database.streamingServices!!.update(streamingServiceId, changes)
+        if (streamingServiceId != null) {
+            Database.streamingServices!!.update(streamingServiceId, changes)
+        }
 
         finish()
     }

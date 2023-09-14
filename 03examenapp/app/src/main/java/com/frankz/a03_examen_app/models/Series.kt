@@ -6,22 +6,22 @@ import java.time.LocalDate
 import java.util.Date
 
 class Series(
-    private var id: Int,
+    private var id: String,
     private var title: String,
     private var genre: String,
     private var isFinished: Boolean,
     private var seasons: Int,
     private var emissionDate: String,
-    private var streamingServiceId: Int,
+    private var streamingServiceId: String,
 ) {
 
-    constructor() : this(-1, "", "", false, 0, "", -1)
+    constructor() : this("", "", "", false, 0, "", "")
 
-    fun getId(): Int {
+    fun getId(): String {
         return id
     }
 
-    fun setId(id: Int) {
+    fun setId(id: String) {
         this.id = id
     }
 
@@ -45,7 +45,7 @@ class Series(
         return emissionDate
     }
 
-    fun getStreamingServiceId(): Int {
+    fun getStreamingServiceId(): String {
         return streamingServiceId
     }
 
@@ -53,7 +53,7 @@ class Series(
         this.emissionDate = emissionDate
     }
 
-    fun setStreamingServiceId(streamingServiceId: Int) {
+    fun setStreamingServiceId(streamingServiceId: String) {
         this.streamingServiceId = streamingServiceId
     }
 

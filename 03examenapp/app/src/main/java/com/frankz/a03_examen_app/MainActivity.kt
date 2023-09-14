@@ -17,10 +17,12 @@ import androidx.appcompat.app.AlertDialog
 import com.frankz.a03_examen_app.activities.CreateStreamingServiceActivity
 import com.frankz.a03_examen_app.activities.SeriesActivity
 import com.frankz.a03_examen_app.activities.UpdateStreamingServiceActivity
-import com.frankz.a03_examen_app.db.Database
-import com.frankz.a03_examen_app.db.SqliteHelperSeries
-import com.frankz.a03_examen_app.db.SqliteHelperStreamingService
+import com.frankz.a03_examen_app.db.*
+import com.frankz.a03_examen_app.models.Series
 import com.frankz.a03_examen_app.models.StreamingService
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private var streamingServices: ArrayList<StreamingService>? = null
@@ -31,11 +33,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // database
-        Database.streamingServices = SqliteHelperStreamingService(this)
-        Database.series = SqliteHelperSeries(this)
+        Database.streamingServices = StreamingServiceFirestore()
+        Database.series = SeriesFirestore()
 
         // load streaming services
-        loadStreamingServices()
+
+        //loadStreamingServices()
 
         val btnCreate = findViewById<Button>(
             R.id.btn_create_streaming_service
@@ -47,33 +50,52 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onStart() {
-        super.onStart()
-
+    override fun onResume() {
+        super.onResume()
         loadStreamingServices()
+
+    }
+
+    private fun createStreamingServiceFromDocument(document: QueryDocumentSnapshot): StreamingService {
+        val id = document.id
+        val name = document.data["name"] as String?
+        val description = document.data["description"] as String?
+        val price = document.data["price"] as Double?
+        val series = mutableListOf<Series>()
+
+        if (id == null || name == null || description == null || price == null) {
+            return StreamingService()
+        }
+
+        return StreamingService(id, name, description, price, series)
     }
 
     private fun loadStreamingServices() {
         val listView = findViewById<ListView>(
             R.id.lv_streaming_services
         )
+        streamingServices = arrayListOf<StreamingService>()
+        Database.streamingServices!!.getAll()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    streamingServices!!.add(createStreamingServiceFromDocument(document))
+                    println("${document.id} => ${document.data}")
+                }
+                if (streamingServices != null) {
 
-        streamingServices = Database.streamingServices!!.getAll()
+                    val adapter = ArrayAdapter(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        streamingServices!!
+                    )
 
-        if (streamingServices != null) {
+                    listView.adapter = adapter
 
-            val adapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_list_item_1,
-                streamingServices!!
-            )
+                    adapter.notifyDataSetChanged()
 
-            listView.adapter = adapter
-
-            adapter.notifyDataSetChanged()
-
-            registerForContextMenu(listView)
-        }
+                    registerForContextMenu(listView)
+                }
+            }
     }
 
 
@@ -123,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                 if (streamingServices == null) return false
 
                 val params = Bundle()
-                params.putInt("id", streamingService.getId())
+                params.putString("id", streamingService.getId())
                 params.putString("name", streamingService.getName())
                 params.putDouble("price", streamingService.getPrice())
                 params.putString("description", streamingService.getDescription())
@@ -134,7 +156,7 @@ class MainActivity : AppCompatActivity() {
             R.id.mi_update -> {
                 "Hacer algo con: ${selectedItemId}"
                 val params = Bundle()
-                params.putInt("id", streamingService.getId())
+                params.putString("id", streamingService.getId())
                 params.putString("name", streamingService.getName())
                 params.putDouble("price", streamingService.getPrice())
                 params.putString("description", streamingService.getDescription())

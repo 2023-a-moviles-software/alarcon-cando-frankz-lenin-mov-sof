@@ -6,9 +6,9 @@ class SeriesDto(
     private var isFinished: Boolean,
     private var seasons: Int,
     private var emissionDate: String,
-    private var streamingServiceId: Int,
+    private var streamingServiceId: String,
 ) {
-    constructor() : this("", "", false, 0, "", -1)
+    constructor() : this("", "", false, 0, "", "")
 
     fun getTitle(): String {
         return title
@@ -30,7 +30,7 @@ class SeriesDto(
         return emissionDate
     }
 
-    fun getStreamingServiceId(): Int {
+    fun getStreamingServiceId(): String {
         return streamingServiceId
     }
 }

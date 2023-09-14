@@ -20,7 +20,7 @@
         android:id="@+id/btn_fs_epaginar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="36dp"
         android:text="E. Paginar"
         app:layout_constraintBottom_toTopOf="@+id/lv_firestore"
         app:layout_constraintEnd_toEndOf="@+id/lv_firestore"
@@ -42,26 +42,27 @@
         android:id="@+id/btn_fs_crear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:text="Crear"
-        tools:layout_editor_absoluteX="184dp"
-        tools:layout_editor_absoluteY="123dp" />
+        app:layout_constraintBottom_toTopOf="@+id/btn_fs_paginar"
+        app:layout_constraintEnd_toEndOf="@+id/btn_fs_paginar"
+        app:layout_constraintStart_toStartOf="@+id/btn_fs_paginar" />
 
     <Button
         android:id="@+id/btn_fs_eliminar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:text="Eliminar"
         app:layout_constraintBottom_toBottomOf="@+id/btn_fs_crear"
         app:layout_constraintStart_toEndOf="@+id/btn_fs_crear"
-        app:layout_constraintTop_toTopOf="@+id/btn_fs_crear"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/btn_fs_crear" />
 
     <Button
         android:id="@+id/btn_fs_datos_prueba"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="40dp"
         android:text="C. Datos"
         app:layout_constraintBottom_toTopOf="@+id/btn_fs_ind_comp"
         app:layout_constraintEnd_toEndOf="@+id/btn_fs_ind_comp"
@@ -76,7 +77,7 @@
         android:text="Order By"
         app:layout_constraintBottom_toTopOf="@+id/btn_fs_crear"
         app:layout_constraintEnd_toEndOf="@+id/btn_fs_crear"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toStartOf="@+id/btn_fs_crear" />
 
     <Button
@@ -94,10 +95,10 @@
         android:id="@+id/btn_fs_paginar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="36dp"
         android:text="Paginar"
         app:layout_constraintBottom_toTopOf="@+id/lv_firestore"
         app:layout_constraintEnd_toEndOf="@+id/lv_firestore"
-        app:layout_constraintHorizontal_bias="0.672"
+        app:layout_constraintHorizontal_bias="0.639"
         app:layout_constraintStart_toStartOf="@+id/lv_firestore" />
 </androidx.constraintlayout.widget.ConstraintLayout>

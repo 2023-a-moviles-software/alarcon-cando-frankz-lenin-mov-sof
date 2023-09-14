@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AnadirProfesion">>
+
+    <TextView
+        android:id="@+id/txt_anadir_profesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Profesion"
+        android:textColor="#673AB7"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_anadir_profesion">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre:"
+            android:textColor="#7646CB"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="275dp" />
+
+        <EditText
+            android:id="@+id/et_nombre_profesion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:hint="Nombre"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Descripcion:"
+            android:textColor="#7646CB"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="275dp" />
+
+        <EditText
+            android:id="@+id/et_descripcion_profesion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:hint="Descripcion"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Salario:"
+            android:textColor="#7646CB"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="275dp" />
+
+        <EditText
+            android:id="@+id/et_salario_promedio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="salario(dolares)"
+            android:inputType="number"
+            android:textSize="18dp"
+            tools:layout_editor_absoluteX="87dp"
+            tools:layout_editor_absoluteY="228dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Activa:"
+            android:textColor="#7646CB"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="275dp" />
+
+        <CheckBox
+            android:id="@+id/cb_activa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Esta Activa"
+            tools:layout_editor_absoluteX="57dp"
+            tools:layout_editor_absoluteY="400dp" />
+
+    </TableLayout>
+
+
+    <Button
+        android:id="@+id/btn_guardar_profesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#673AB7"
+        android:text="Guardar"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

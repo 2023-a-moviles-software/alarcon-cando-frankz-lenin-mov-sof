@@ -19,9 +19,6 @@ import java.time.LocalDate
 
 class CreateSeriesActivity : AppCompatActivity() {
 
-    // val streamingServices = HardcodedStreamingServices.streamingServices
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_series)
@@ -44,7 +41,7 @@ class CreateSeriesActivity : AppCompatActivity() {
             R.id.btn_new_series
         )
 
-        val streamingServiceId = intent.getIntExtra("streamingServiceId", 0)
+        val streamingServiceId = intent.getStringExtra("streamingServiceId").toString()
 
         saveNewSeriesButton.setOnClickListener {
             createSeries(streamingServiceId)
@@ -52,7 +49,7 @@ class CreateSeriesActivity : AppCompatActivity() {
 
     }
 
-    private fun createSeries(streamingServiceId: Int) {
+    private fun createSeries(streamingServiceId: String) {
         val inputName = findViewById<EditText>(R.id.pt_series_title)
         val inputGenre = findViewById<EditText>(R.id.pt_series_genre)
         val inputSeasons = findViewById<EditText>(R.id.pt_series_seasons)

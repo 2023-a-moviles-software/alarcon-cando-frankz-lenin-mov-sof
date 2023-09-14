@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FF0000" /> <!-- Cambia el color según tus preferencias -->
+        </shape>
+    </item>
+    <item android:bottom="2dp"> <!-- Ajusta el grosor del borde inferior según tus preferencias -->
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000" /> <!-- Color transparente -->
+        </shape>
+    </item>
+</layer-list>

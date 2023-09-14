@@ -4,16 +4,16 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 class StreamingService(
-    private var id: Int,
+    private var id: String,
     private var name: String,
     private var description: String,
     private var price: Double,
     private var series: MutableList<Series>,
 ) {
 
-    constructor() : this(-1, "", "", 0.0, mutableListOf())
+    constructor() : this("", "", "", 0.0, mutableListOf())
 
-    fun getId(): Int {
+    fun getId(): String {
         return id
     }
 
@@ -33,7 +33,7 @@ class StreamingService(
         return series
     }
 
-    fun setId(id: Int) {
+    fun setId(id: String) {
         this.id = id
     }
 

@@ -60,8 +60,8 @@ class UpdateSeriesActivity : AppCompatActivity() {
         val seriesIsFinished = spinnerIsSeriesFinished.selectedItem.toString() == "Si"
         val streamingServiceName = inputStreamingService.text.toString()
 
-        val streamingServiceId = intent.getIntExtra("streamingServiceId", 0)
-        val seriesId = intent.getIntExtra("seriesId", 0)
+        val streamingServiceId = intent.getStringExtra("streamingServiceId").toString()
+        val seriesId = intent.getStringExtra("seriesId").toString()
 
 
         val updatedSeries = SeriesDto(

@@ -19,24 +19,27 @@ import androidx.appcompat.app.AlertDialog
 import com.frankz.a03_examen_app.MainActivity
 import com.frankz.a03_examen_app.R
 import com.frankz.a03_examen_app.db.Database
+import com.frankz.a03_examen_app.db.SeriesFirestore
+import com.frankz.a03_examen_app.db.StreamingServiceFirestore
 import com.frankz.a03_examen_app.models.Series
 import com.frankz.a03_examen_app.models.StreamingService
+import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class SeriesActivity : AppCompatActivity() {
 
     private var series: ArrayList<Series>? = null
-    var seletedStreamingServiceId = 0
+    var seletedStreamingServiceId = ""
     var selectedItemId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series)
 
-        seletedStreamingServiceId = intent.getIntExtra("id", 0)
+        seletedStreamingServiceId = intent.getStringExtra("id").toString()
         println("streamingServiceId: $seletedStreamingServiceId")
 
         // load series
-        loadSeries(seletedStreamingServiceId)
+        //loadSeries(seletedStreamingServiceId)
 
 
 
@@ -54,20 +57,22 @@ class SeriesActivity : AppCompatActivity() {
         )
 
         createSeriesButton.setOnClickListener {
-            goToActivity(CreateSeriesActivity::class.java, Bundle().apply {
-                val streamingService = Database.streamingServices!!.getOne(seletedStreamingServiceId)
-                if (streamingService.getId() == seletedStreamingServiceId) {
-                    putInt("streamingServiceId", streamingService.getId())
-                    putString("streamingServiceName", streamingService.getName())
+            Database.streamingServices!!.getOne(seletedStreamingServiceId)
+                .addOnSuccessListener {
+                    val bundle = Bundle()
+                    val streamingService = StreamingServiceFirestore.createStreamingServiceFromDocument(it)
+                    if (streamingService.getId() == seletedStreamingServiceId) {
+                        bundle.putString("streamingServiceId", streamingService.getId())
+                        bundle.putString("streamingServiceName", streamingService.getName())
+                    }
+                    goToActivity(CreateSeriesActivity::class.java, bundle)
                 }
-
-            })
         }
 
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         loadSeries(seletedStreamingServiceId)
     }
@@ -80,35 +85,52 @@ class SeriesActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun loadSeries(streamingServiceId: Int) {
-        if (streamingServiceId != 0) {
+    private fun loadSeries(streamingServiceId: String) {
+        if (streamingServiceId != "") {
 
-            val streamingService = Database.streamingServices!!.getOne(streamingServiceId)
+            val streamingService = StreamingService()
+            Database.streamingServices!!.getOne(streamingServiceId)
+            .addOnSuccessListener {
+                val foundStreamingService = StreamingServiceFirestore.createStreamingServiceFromDocument(it)
+                streamingService.setId(foundStreamingService.getId())
+                streamingService.setName(foundStreamingService.getName())
+                streamingService.setDescription(foundStreamingService.getDescription())
+                streamingService.setPrice(foundStreamingService.getPrice())
 
-            if (streamingService.getId() == streamingServiceId) {
-                series = Database.series!!.getAllByStreamingService(streamingServiceId)
+                if (streamingService.getId() == streamingServiceId) {
+                    val tvTitle = findViewById<TextView>(
+                        R.id.tv_streaming_service
+                    )
 
-                val tvTitle = findViewById<TextView>(
-                    R.id.tv_streaming_service
-                )
+                    tvTitle.text = streamingService.getName()
 
-                tvTitle.text = streamingService.getName()
+                    series = arrayListOf<Series>()
+                    Database.series!!.getAllByStreamingService(streamingServiceId)
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            series!!.add(SeriesFirestore.createSeriesFromDocument(document))
+                        }
 
-                val seriesList = findViewById<ListView>(
-                    R.id.lv_series
-                )
+                        val seriesList = findViewById<ListView>(
+                            R.id.lv_series
+                        )
 
-                val adapter = ArrayAdapter(
-                    this,
-                    android.R.layout.simple_list_item_1,
-                    series!!
-                )
+                        val adapter = ArrayAdapter(
+                            this,
+                            android.R.layout.simple_list_item_1,
+                            series!!
+                        )
 
-                seriesList.adapter = adapter
+                        seriesList.adapter = adapter
 
-                adapter.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
 
-                registerForContextMenu(seriesList)
+                        registerForContextMenu(seriesList)
+                    }
+                    .addOnFailureListener { exception ->
+                        println("Error getting documents: $exception")
+                    }
+                }
             }
         }
     }
@@ -149,21 +171,23 @@ class SeriesActivity : AppCompatActivity() {
         val selectedSeries = series!![selectedItemId]
         return when(item.itemId) {
             R.id.mi_edit_series -> {
-                val streamingService = Database.streamingServices!!.getOne(seletedStreamingServiceId)
-
-                goToActivity(
-                    UpdateSeriesActivity::class.java,
-                    Bundle().apply {
-                        putInt("streamingServiceId", seletedStreamingServiceId)
-                        putString("streamingServiceName", streamingService.getName())
-                        putInt("seriesId", selectedSeries.getId())
-                        putString("seriesTitle", selectedSeries.getTitle())
-                        putString("seriesGenre", selectedSeries.getGenre())
-                        putBoolean("seriesIsFinished", selectedSeries.getIsFinished())
-                        putInt("seriesSeasons", selectedSeries.getSeasons())
-                        putString("seriesEmissionDate", selectedSeries.getEmissionDate().toString())
+                Database.streamingServices!!.getOne(seletedStreamingServiceId)
+                    .addOnSuccessListener{
+                        val streamingService = StreamingServiceFirestore.createStreamingServiceFromDocument(it)
+                        goToActivity(
+                            UpdateSeriesActivity::class.java,
+                            Bundle().apply {
+                                putString("streamingServiceId", seletedStreamingServiceId)
+                                putString("streamingServiceName", streamingService.getName())
+                                putString("seriesId", selectedSeries.getId())
+                                putString("seriesTitle", selectedSeries.getTitle())
+                                putString("seriesGenre", selectedSeries.getGenre())
+                                putBoolean("seriesIsFinished", selectedSeries.getIsFinished())
+                                putInt("seriesSeasons", selectedSeries.getSeasons())
+                                putString("seriesEmissionDate", selectedSeries.getEmissionDate().toString())
+                            }
+                        )
                     }
-                )
                 true
             }
             R.id.mi_delete_series -> {
