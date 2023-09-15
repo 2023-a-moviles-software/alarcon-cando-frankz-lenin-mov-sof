@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="bg_color">#F8FAFC</color>
+    <color name="selected_tab_color">#F1F1F1</color>
+    <color name="yellow_color">#FEAE37</color>
+    <color name="gray_color">#999999</color>
+    <color name="bg_gray_color">#7E839D</color>
+    <color name="green_color">#84CC16</color>
+<!--    background for a logout button-->
+    <color name="logout_bg_color">#ef4444</color>
+</resources>
